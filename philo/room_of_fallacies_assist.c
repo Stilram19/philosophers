@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sophia.h                                           :+:      :+:    :+:   */
+/*   room_of_fallacies_assist.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 21:42:36 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/11 16:28:20 by obednaou         ###   ########.fr       */
+/*   Created: 2023/01/11 16:09:22 by obednaou          #+#    #+#             */
+/*   Updated: 2023/01/11 16:27:57 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOPHIA_H
-# define SOPHIA_H
+#include "sophia.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <pthread.h>
-# include "my_reference.h"
+t_sophia	ft_strlen(const char *str)
+{
+	t_sophia	i;
 
-t_sophia	ft_strlen(const char *arg);
-t_sophia	ft_strncmp(const char *s1, const char *s2, t_sophia n);
-void		detecting_fallacies(int argc, char **argv, t_args *args);
+	i = NIHIL;
+	while (*(str + i))
+		i++;
+	return (i);
+}
 
-#endif
+t_sophia	ft_strncmp(const char *s1, const char *s2, t_sophia n)
+{
+	t_sophia	i;
+
+	i = 0;
+	while (n-- && (*(s1 + i) || *(s2 + i)))
+	{
+		if (*(s1 + i) != *(s2 + i))
+			return (*((unsigned char *)s1 + i) - *((unsigned char *)s2 + i));
+		i++;
+	}
+	return (0);
+}

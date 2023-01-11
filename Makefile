@@ -1,9 +1,11 @@
-SRCS=	main.c
+SRCS=	philo/main.c \
+		philo/room_of_fallacies.c \
+		philo/room_of_fallacies_assist.c
 OBJS=	${SRCS:.c=.o}
 CC=	cc
 CFLAGS=	-Wall -Wextra -Werror
 RM= rm -f
-NAME= philo
+NAME= philoo
 
 all: ${NAME}
 

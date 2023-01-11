@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sophia.h                                           :+:      :+:    :+:   */
+/*   my_reference.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 21:42:36 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/11 16:28:20 by obednaou         ###   ########.fr       */
+/*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
+/*   Updated: 2023/01/11 16:21:55 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOPHIA_H
-# define SOPHIA_H
+#ifndef MY_REFERENCE_H
+# define MY_REFERENCE_H
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <pthread.h>
-# include "my_reference.h"
+# define VALID 1
+# define INVALID 0
+# define EXIST 1
+# define NIHIL 0
+# define EXTREM "2147483647"
 
-t_sophia	ft_strlen(const char *arg);
-t_sophia	ft_strncmp(const char *s1, const char *s2, t_sophia n);
-void		detecting_fallacies(int argc, char **argv, t_args *args);
+typedef int	t_sophia;
+
+typedef struct s_args
+{
+	t_sophia	philo_num;
+	t_sophia	time_to_die;
+	t_sophia	time_to_eat;
+	t_sophia	time_to_sleep;
+	t_sophia	number_of_meals;
+}t_args;
 
 #endif
