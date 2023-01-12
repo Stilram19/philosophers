@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/11 21:08:35 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:41:12 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # define INVALID 0
 # define EXIST 1
 # define NIHIL 0
+# define THINKING 0
+# define EATING 1
+# define SLEEPING 2
 
 # define FREE 1
 # define EXTREM "2147483647"
@@ -26,7 +29,10 @@ typedef pthread_mutex_t	t_fork;
 
 typedef struct s_philos
 {
-	t_sophia	death_flag;
+	t_sophia	id;
+	t_sophia	state;
+	t_fork		lf;
+	t_fork		rf;
 	pthread_t	t;
 }t_philos;
 
@@ -41,10 +47,7 @@ typedef struct s_args
 
 typedef struct s_global
 {
-	t_sophia		*curr_index;
 	t_philos		*philos;
-	t_fork			*forks;
-	pthread_mutex_t	gp_mtx;
 	t_args			args;
 }t_global;
 

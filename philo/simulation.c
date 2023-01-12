@@ -6,31 +6,25 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:12:27 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/11 21:12:54 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:51:08 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sophia.h"
 
-void	*philo_routine(void *arg)
+void	*sophia(void *arg)
 {
-	t_sophia		p_num;
-	static t_sophia	index;
-	t_global		*g;
+	t_philos	*p;
 
-	g = arg;
-	pthread_mutex_lock(g->gp_mtx);
-	p_num = index + 1;
-	pthread_mutex_unlock(g->gp_mtx);
+	p = arg;
 	while (1)
 	{
-		pthread_mutex_lock(g->forks + p_num - 1);
-		//getting the first fork
-		pthread_mutex_unlock(g->forks + p_num - 1);
-		pthread_mutex_lock(g->forks + p_num);
-		//eating
-		pthread_mutex_lock(g->forks + p_num);
-		//sleeping
+		pthread_mutex_lock(&(p->lf));
+		pthread_mutex_lock(&(p->rf));
+		printf("%d is eating", p->id)
+		pthread_mutex_unlock(&(p->rf));
+		pthread_mutex_unlock(&(p->lf));
+		printf("%d is sleeping")
 	}
 }
 
@@ -41,7 +35,7 @@ void	create_philosophers(t_global *g)
 	i = -1;
 	while (++i)
 	{
-		if (pthread_create(&(g->philos[i].t), NULL, philo_routine, &g))
+		if (pthread_create(&(g->philos[i].t), NULL, sophia, &(g->philos[i])))
 			exit_with_error("Logical fallacy: failed to create philosophers");
 	}
 }
@@ -52,18 +46,27 @@ void	simulation_init(t_global *g)
 
 	i = -1;
 	g->philos = malloc(sizeof(t_philos) * g->args.philo_num);
-	g->forks = malloc(sizeof(t_fork) * g->args.philo_num);
-	if (!(g->philos && g->forks))
+	if (!g->philos)
 		exit_with_error("Logical fallacy: can't allocate region from the heap");
-	pthread_mutex_init(g->gp_mtx);
 	while (++i < g->args.philo_num)
-		pthread_mutex_init(g->forks + i, NULL);
-	i = -1;
-	while (++i < g->args.philo_num)
-		g->philos[i].death_falg = 0;
+	{
+		g->philos[i].id = i + 1;
+		g->philos[i].state = THINKING;
+		if (pthread_mutex_init(&(g->philos[i].lf), NULL))
+			exit_with_error("Logical fallacy: Can't protect forks");
+		if (!i)
+			g->philos[g->args.philo_num - 1].rf = g->philos[i].lf;
+		else
+			g->philos[i - 1].rf = g->philos[i].lf;
+	}
 }
 
-void	starting_the_simulation(t_global *g)
+void	simulation_distr(t_global *g)
 {
+	t_sophia	i;
 
+	i = -1;
+	while (++i < g->args.philo_num)
+		pthread_mutex_destroy(&(g->philos[i].lf));
+	free(g->philos);
 }
