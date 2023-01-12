@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/12 18:41:12 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:29:24 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,6 @@
 typedef int				t_sophia;
 typedef pthread_mutex_t	t_fork;
 
-typedef struct s_philos
-{
-	t_sophia	id;
-	t_sophia	state;
-	t_fork		lf;
-	t_fork		rf;
-	pthread_t	t;
-}t_philos;
-
 typedef struct s_args
 {
 	t_sophia	philo_num;
@@ -45,10 +36,15 @@ typedef struct s_args
 	t_sophia	number_of_meals;
 }t_args;
 
-typedef struct s_global
+typedef struct s_philos
 {
-	t_philos		*philos;
-	t_args			args;
-}t_global;
+	t_sophia	id;
+	t_sophia	existance;
+	time_t		timer;
+	t_fork		lf;
+	t_fork		rf;
+	pthread_t	t;
+	t_arg		*args;
+}t_philos;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:41:58 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/12 18:12:15 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:21:15 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	main(int argc, char **argv)
 {
-	t_global	g;
+	t_args		a;
 
-	detecting_fallacies(argc, argv, &(g.args));
-	simulation_init(&g);
-	create_philosophers(&g);
-	monitoring(&g);
-	simulation_destr(&g);
+	detecting_fallacies(argc, argv, &a);
+	simulation_init(&a);
+	create_philosophers();
+	superviser(&p);
+	simulation_destr(&p);
 	return (0);
 }
