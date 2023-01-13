@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:28:13 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/12 15:34:35 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:03:44 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ t_sophia	safe_atoi(char *arg)
 		arg++;
 	}
 	return (ret);
-}
-
-void	exit_with_error(const char *error)
-{
-	printf("%s\n", error);
-	exit(EXIT_FAILURE);
 }
 
 t_sophia	extremism_test(char *arg)

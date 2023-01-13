@@ -1,6 +1,8 @@
 SRCS=	philo/main.c \
+		philo/utils.c \
 		philo/room_of_fallacies.c \
-		philo/room_of_fallacies_assist.c
+		philo/room_of_fallacies_assist.c \
+		philo/simulation.c
 OBJS=	${SRCS:.c=.o}
 CC=	cc
 CFLAGS=	-Wall -Wextra -Werror

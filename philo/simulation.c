@@ -6,88 +6,39 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:12:27 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/12 22:31:22 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:58:55 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sophia.h"
 
-time_t	_time(void)
-{
-	struct timeval t;
-
-	gettimeofday(&t, NULL);
-	return (t.tv_sec * 1000 + t.tv_usec / 1000);
-}
-
-void	*sophia(void *arg)
-{
-	t_philos	*p;
-
-	p = arg;
-	while (p->existence)
-	{
-		printf("%ld %d is thinking\n", _time(), p->id);
-		pthread_mutex_lock(&(p->lf));
-		printf("%ld %d has taken a fork\n", _time(), p->id);
-		pthread_mutex_lock(&(p->rf));
-		p->timer = _time();
-		printf("%ld %d has taken a fork\n", _time(), p->id);
-		printf("%ld %d is eating\n", _time(), p->id);
-		pthread_mutex_unlock(&(p->rf));
-		pthread_mutex_unlock(&(p->lf));
-		printf("%ld %d is sleeping\n", _time(), p->id);
-		usleep(p->args->time_of_sleep * 1000);
-	}
-}
-
 void	create_philosophers(t_philos *p)
 {
 	t_sophia	i;
-	t_sopiha	alive;
 
 	i = -1;
-	alive = EXIST;
 	while (++i)
 	{
-		p[i].id = i + 1;
-		p[i].args = args;
-		p[i].timer = _time();
-		p[i].existence = EXIST;
-		if (pthread_create(&(p[i].t), NULL, sophia, &p))
-			exit_with_error("Logical fallacy: failed to create philosophers");
-		/*if (pthread_detach(p[i].t))
-			exit_with_error("Logical fallacy: failed to detach philosophers");*/
-	}
-	while (alive)
-	{
-		i = -1;
-		while (++i < p->args->philo_num)
-		{
-			if (_time() - p[i].timer == p->args->time_to_die)
-			{
-				printf("%ld %d died\n", _time(), p[i].id);
-				p[i].existence = NIHIL;
-				alive = NIHIL;
-				break ;
-			}
-		}
+		p[i] = _time();
+		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i))
+			exit_with_error("Existencial crisis: failed to create philosophers");
 	}
 }
 
-void	simulation_init(t_args *args)
+void	simulation_init(t_philos *p, t_args *args)
 {
 	t_sophia	i;
-	t_philos	*p;
 
 	i = -1;
-	p = malloc(sizeof(t_philos) * args->philo_num);
-	if (!p)
-		exit_with_error("Logical fallacy: can't allocate region from the heap");
+	args->pass_flag = VALID;
+	if (pthread_mutex_init(&(args->pass_mtx), NULL))
+		exit_with_error("fallacy: Can't initialize pass mutex");
 	while (++i < args->philo_num)
 	{
+		p[i].id = i + 1;
+		p[i].args = args;
 		if (pthread_mutex_init(&(p[i].lf), NULL))
-			exit_with_error("Logical fallacy: Can't protect forks");
+			exit_with_error("fallacy: Can't protect forks");
 		if (!i)
 			p[args->philo_num - 1].rf = p[i].lf;
 		else
@@ -95,12 +46,32 @@ void	simulation_init(t_args *args)
 	}
 }
 
-void	simulation_distr(t_philos *p)
+void	stop_simulation(t_philos *p)
 {
 	t_sophia	i;
 
 	i = -1;
+	pthread_mutex_destroy(&(p->args->pass_mtx));
 	while (++i < p->args->philo_num)
 		pthread_mutex_destroy(&(p[i].lf));
 	free(p);
+}
+
+void	start_simulation(t_args *args)
+{
+	t_philos	*p;
+
+	if (!(args->philo_num - 1))
+	{
+		printf("%ld 1 died\n", _time() / 1000);
+		exit(EXIT_SUCCESS);
+	}
+	p = malloc(sizeof(t_philos) * args->philo_num);
+	if (!p)
+		exit_with_error("fallacy: can't allocate region from the heap");
+	simulation_init(p, args);
+	return ;
+	create_philosophers(p);
+	supervising(p);
+	stop_simulation(p);
 }

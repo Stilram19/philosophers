@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 21:41:58 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/13 21:08:47 by obednaou         ###   ########.fr       */
+/*   Created: 2023/01/13 22:05:37 by obednaou          #+#    #+#             */
+/*   Updated: 2023/01/13 22:42:08 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sophia.h"
+#include <sys/time.h>
+#include <stdio.h>
 
-int	main(int argc, char **argv)
+
+
+int	main(void)
 {
-	t_args		args;
+	int	i;
 
-	detecting_fallacies(argc, argv, &args);
-	start_simulation(&args);
+	i = 0;
+	while (i < 10)
+	{
+		printf("%ld\n", _time());
+		i++;
+	}
 	return (0);
 }
