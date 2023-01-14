@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:41:58 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/13 21:08:47 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:57:42 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	main(int argc, char **argv)
 {
 	t_args		args;
 
-	detecting_fallacies(argc, argv, &args);
-	start_simulation(&args);
-	return (0);
+	if (detecting_fallacies(argc, argv, &args)
+		|| start_simulation(&args))
+		return (ERROR);
+	return (SUCCESS);
 }

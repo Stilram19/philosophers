@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:28:13 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/13 16:03:44 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:59:46 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_sophia	safe_atoi(char *arg)
 	return (ret);
 }
 
-t_sophia	extremism_test(char *arg)
+t_sophia	extrem_test(char *arg)
 {
 	if (*arg == '+')
 		arg++;
@@ -55,7 +55,7 @@ t_sophia	digits_test(char *arg)
 	return (digit_existence);
 }
 
-void	detecting_fallacies(int argc, char **argv, t_args *args)
+t_sophia	detecting_fallacies(int argc, char **argv, t_args *args)
 {
 	t_sophia	i;
 	t_sophia	boolean;
@@ -65,15 +65,16 @@ void	detecting_fallacies(int argc, char **argv, t_args *args)
 	boolean = VALID;
 	ptr_to_field = (t_sophia *)args;
 	if (argc != 5 && argc != 6)
-		exit_with_error("Logical fallacy: Invalid number of arguments");
+		return (ERROR);
 	while (boolean && ++i < argc)
 	{
 		boolean = digits_test(*(argv + i));
-		(boolean && (boolean = extremism_test(*(argv + i))));
+		(boolean && (boolean = extrem_test(*(argv + i))));
 		(boolean && (*ptr_to_field = safe_atoi(*(argv + i))));
 		ptr_to_field++;
 	}
 	if (!boolean)
-		exit_with_error("Logical fallacy: Invalid argument");
+		return (ERROR);
 	((argc == 6) || (args->number_of_meals = -1));
+	return (SUCCESS);
 }
