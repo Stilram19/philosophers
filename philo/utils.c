@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/15 17:44:04 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:38:32 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	critical_section(t_philos *p)
 	if (p->args->number_of_meals + 1)
 		p->meals_count++;
 	pthread_mutex_unlock(&(p->critical_mtx));
+	printf("%d %d\n", p->id, p->meals_count);
 }
 
 void	supervising(t_philos *p)
@@ -51,7 +52,6 @@ void	supervising(t_philos *p)
 		while (++i < p->args->philo_num)
 		{
 			pthread_mutex_lock(&(p->args->pass_mtx));
-
 			pthread_mutex_lock(&(p[i].critical_mtx));
 			if (_time() - p[i].timer >= (p->args->time_to_die) * 1000)
 			{
@@ -60,7 +60,7 @@ void	supervising(t_philos *p)
 			}
 			pthread_mutex_unlock(&(p[i].critical_mtx));
 			pthread_mutex_lock(&(p->args->meals_mtx));
-			if (p->args->total_done_eating == p->args->number_of_meals)
+			if (p->args->total_done_eating == p->args->philo_num)
 				return ;
 			pthread_mutex_unlock(&(p->args->meals_mtx));
 			pthread_mutex_unlock(&(p->args->pass_mtx));
