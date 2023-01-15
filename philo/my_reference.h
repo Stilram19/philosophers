@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/14 18:03:23 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:21:59 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef struct s_args
 	t_sophia		time_to_eat;
 	t_sophia		time_to_sleep;
 	t_sophia		number_of_meals;
-	t_sophia		pass_flag;
+	t_sophia		total_done_eating;
+	t_mtx			meals_mtx;
 	t_mtx			pass_mtx;
 }t_args;
 
@@ -44,7 +45,6 @@ typedef struct s_philos
 {
 	t_sophia	id;
 	t_sophia	meals_count;
-	t_sophia	done_eating;
 	time_t		timer;
 	t_mtx		*lf;
 	t_mtx		*rf;
