@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/15 18:38:32 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/16 18:12:52 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@ void	critical_section(t_philos *p)
 {
 	pthread_mutex_lock(&(p->critical_mtx));
 	p->timer = _time();
+	pthread_mutex_unlock(&(p->critical_mtx));
+	usleep(p->args->time_to_eat * 1000);
+	if (!(p->args->number_of_meals + 1))
+		return ;
+	p->meals_count++;
 	if (p->meals_count == p->args->number_of_meals)
 	{
 		pthread_mutex_lock(&(p->args->meals_mtx));
 		p->args->total_done_eating++;
 		pthread_mutex_unlock(&(p->args->meals_mtx));
 	}
-	if (p->args->number_of_meals + 1)
-		p->meals_count++;
-	pthread_mutex_unlock(&(p->critical_mtx));
-	printf("%d %d\n", p->id, p->meals_count);
 }
 
-void	supervising(t_philos *p)
+t_sophia	supervising(t_philos *p)
 {
 	t_sophia		i;
 
@@ -56,16 +57,17 @@ void	supervising(t_philos *p)
 			if (_time() - p[i].timer >= (p->args->time_to_die) * 1000)
 			{
 				printf("%ld %d died\n", _time() / 1000, p[i].id);
-				return ;
+				return (SUCCESS);
 			}
 			pthread_mutex_unlock(&(p[i].critical_mtx));
 			pthread_mutex_lock(&(p->args->meals_mtx));
 			if (p->args->total_done_eating == p->args->philo_num)
-				return ;
+				return (SUCCESS);
 			pthread_mutex_unlock(&(p->args->meals_mtx));
 			pthread_mutex_unlock(&(p->args->pass_mtx));
 		}
 	}
+	return (SUCCESS);
 }
 
 void	print_after_pass(t_philos *p, const char *state)
@@ -85,10 +87,9 @@ void	*sophia_routine(void *arg)
 		pthread_mutex_lock(p->lf);
 		print_after_pass(p, "has taken his left fork");
 		pthread_mutex_lock(p->rf);
-		critical_section(p);
 		print_after_pass(p, "has taken his right fork");
 		print_after_pass(p, "is eating");
-		usleep(p->args->time_to_eat * 1000);
+		critical_section(p);
 		pthread_mutex_unlock(p->rf);
 		pthread_mutex_unlock(p->lf);
 		print_after_pass(p, "is sleeping");
