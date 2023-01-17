@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 22:05:37 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/15 10:47:07 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:43:36 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,32 @@
 
 pthread_mutex_t	mtx;
 
-
 void	*routine(void *arg)
 {
-	printf("waiting id %d\n", *(int *)arg);
+	int	i;
+
+	i = 0;
+	sleep(1);
 	pthread_mutex_lock(&mtx);
-	printf("Hello id %d\n", *(int *)arg);
+	printf("Succeeded to lock the mutex!!!!!!\n");
 	pthread_mutex_unlock(&mtx);
-	free(arg);
 	return (arg);
+}
+
+void	function(void)
+{
+	pthread_mutex_lock(&mtx);
+	printf("Hello from main thread!\n");
 }
 
 int	main(void)
 {
-	int	i;
-	int	*ptr;
-	pthread_t	t[6];
+	pthread_t	t;
 
-	i = 0;
-	pthread_mutex_init(&(mtx), NULL);
-	while (i < 6)
-	{
-		ptr = malloc(sizeof(int));
-		*ptr = i + 1;
-		if (pthread_create(&t[i], NULL, routine, ptr))
-			exit(1);
-		//usleep(10);
-		i++;
-	}
-	system("leaks a.out");
+	pthread_mutex_init(&mtx, NULL);
+	if (pthread_create(&t, NULL, routine, NULL))
+		return (1);
+	function();
+	sleep(4);
 	return (0);
 }

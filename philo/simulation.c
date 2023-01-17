@@ -25,7 +25,7 @@ t_sophia	create_philosophers(t_philos *p)
 		i++;
 	}
 	i = 0;
-	usleep(1000);
+	usleep(150);
 	while (++i < p->args->philo_num)
 	{
 		p[i].timer = _time();
