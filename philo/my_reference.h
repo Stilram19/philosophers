@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/16 16:00:22 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/18 13:48:26 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ typedef struct s_args
 	t_sophia		time_to_sleep;
 	t_sophia		number_of_meals;
 	t_sophia		total_done_eating;
-	t_mtx			*forks;
 	t_mtx			meals_mtx;
 	t_mtx			pass_mtx;
+	t_mtx			*forks;
 }t_args;
 
 typedef struct s_philos

@@ -12,26 +12,40 @@
 
 #include "sophia.h"
 
+/*void	_usleep(time_t time_up)
+{
+	while (_time() < time_up)
+		usleep((time_up - _time()) / 2);
+}*/
+
+void	_usleep(time_t t)
+{
+	time_t	time_up;
+	time_t	rest;
+
+	time_up = _time() + t;
+	rest = t / 1000;
+	while (_time() < time_up)
+		usleep(rest);
+}
+
 t_sophia	create_philosophers(t_philos *p)
 {
 	t_sophia	i;
 
 	i = -1;
+	_time();
 	while (++i < p->args->philo_num)
 	{
-		p[i].timer = _time();
-		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i))
+		if (!(i % 2) && pthread_create(&(p[i].t), NULL, sophia_routine, p + i))
 			return (ERROR);
-		i++;
 	}
-	i = 0;
-	usleep(150);
+	i = -1;
+	_usleep(500);
 	while (++i < p->args->philo_num)
 	{
-		p[i].timer = _time();
-		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i))
+		if ((i % 2) && pthread_create(&(p[i].t), NULL, sophia_routine, p + i))
 			return (ERROR);
-		i++;
 	}
 	return (SUCCESS);
 }
@@ -39,10 +53,8 @@ t_sophia	create_philosophers(t_philos *p)
 t_sophia	simulation_init(t_philos *p, t_args *args)
 {
 	t_sophia	i;
-	t_mtx		*ptr;
 
 	i = -1;
-	ptr = args->forks;
 	if (pthread_mutex_init(&(args->pass_mtx), NULL)
 		|| pthread_mutex_init(&(args->meals_mtx), NULL))
 		return (ERROR);
@@ -52,7 +64,8 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 		p[i].id = i + 1;
 		p[i].args = args;
 		p[i].meals_count = 0;
-		p[i].lf = ptr;
+		p[i].timer = 0;
+		p[i].lf = args->forks + i;
 		if (pthread_mutex_init(p[i].lf, NULL)
 			|| pthread_mutex_init(&(p[i].critical_mtx), NULL))
 			return (ERROR);
@@ -60,7 +73,6 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 			p[args->philo_num - 1].rf = p[i].lf;
 		else
 			p[i - 1].rf = p[i].lf;
-		ptr++;
 	}
 	return (SUCCESS);
 }
@@ -71,14 +83,13 @@ void	stop_simulation(t_philos *p)
 
 	i = -1;
 	pthread_mutex_destroy(&(p->args->pass_mtx));
-	pthread_mutex_destroy(&(p->args->meals_mtx));
 	while (++i < p->args->philo_num)
 		(pthread_mutex_destroy(p[i].lf)
 			|| pthread_mutex_destroy(&(p[i].critical_mtx)));
-	if (p->args->forks)
-		free(p->args->forks);
 	if (p)
 		free(p);
+	if (p->args->forks)
+		free(p->args->forks);
 }
 
 t_sophia	start_simulation(t_args *args)
@@ -86,13 +97,11 @@ t_sophia	start_simulation(t_args *args)
 	t_sophia	ret;
 	t_philos	*p;
 
-	ret = SUCCESS;
 	if (!(args->philo_num))
 		return (SUCCESS);
 	p = malloc(sizeof(t_philos) * args->philo_num);
-	args->forks = malloc(sizeof(t_philos) * args->philo_num);
-	if (!(p && args->forks))
-		ret = ERROR;
+	args->forks = malloc(sizeof(t_mtx) * args->philo_num);
+	ret = !(p && args->forks);
 	(ret || (ret = (simulation_init(p, args) || create_philosophers(p)
 				|| supervising(p))));
 	stop_simulation(p);

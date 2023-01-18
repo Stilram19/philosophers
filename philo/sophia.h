@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:42:36 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/16 21:03:22 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:11:34 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include "my_reference.h"
-//# define usleep(x) {int i = 0; while (i < x){usleep(10);i += 10;}}
 
+time_t		_time(void);
 void		stop_simulation(t_philos *p);
 void		*sophia_routine(void *arg);
 void		print_after_pass(t_philos *p, const char *state);
-time_t		_time(void);
+void		_usleep(time_t t);
 t_sophia	supervising(t_philos *p);
 t_sophia	start_simulation(t_args *arg);
 t_sophia	ft_strlen(const char *arg);
