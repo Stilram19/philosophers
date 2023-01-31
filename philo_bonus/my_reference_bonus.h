@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:30:48 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/30 21:49:24 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:47:51 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 # define VALID 1
 # define INVALID 0
 # define ERROR 1
-# define EXTREM "2147483647\0"
+# define EXTREM "2147483647"
 
-typedef int	t_sophia;
+typedef int		t_sophia;
+typedef long	t_time;
 
 typedef struct s_args
 {

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/18 13:48:26 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:22:25 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@
 # define EATING 1
 # define SLEEPING 2
 # define ERROR 1
+# define BREAK 0
+# define LOOP 1
+# define DONE 1
 # define SUCCESS 0
 
 # define EXTREM "2147483647"
 
 typedef pthread_mutex_t	t_mtx;
 typedef int				t_sophia;
+typedef long			t_time;
 
 typedef struct s_args
 {
@@ -46,7 +50,7 @@ typedef struct s_philos
 {
 	t_sophia	id;
 	t_sophia	meals_count;
-	time_t		timer;
+	t_time		timer;
 	t_mtx		*lf;
 	t_mtx		*rf;
 	t_mtx		critical_mtx;

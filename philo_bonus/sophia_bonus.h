@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:23:51 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/30 21:46:22 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/31 11:39:33 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <semaphore.h>
+# include <sys/time.h>
 # include "my_reference_bonus.h"
 
 t_sophia	detecting_fallacies(t_sophia argc, char **argv, t_sophia *ptr_args);

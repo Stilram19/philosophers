@@ -6,15 +6,15 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/18 18:45:20 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:05:53 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sophia.h"
 
-time_t	_time(void)
+t_time	_time(void)
 {
-	static time_t	start;
+	static t_time	start;
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
@@ -28,9 +28,6 @@ time_t	_time(void)
 
 void	critical_section(t_philos *p)
 {
-	pthread_mutex_lock(&(p->critical_mtx));
-	p->timer = _time();
-	pthread_mutex_unlock(&(p->critical_mtx));
 	if (!(p->meals_count + 1))
 		return ;
 	p->meals_count++;
@@ -88,7 +85,9 @@ void	*sophia_routine(void *arg)
 		print_after_pass(p, "has taken his left fork");// remove
 		pthread_mutex_lock(p->rf);
 		print_after_pass(p, "has taken his right fork");// remove
-		critical_section(p);
+		pthread_mutex_lock(&(p->critical_mtx));
+		p->timer = _time();
+		pthread_mutex_unlock(&(p->critical_mtx));
 		print_after_pass(p, "is eating");
 		_usleep(p->args->time_to_eat * 1000);
 		pthread_mutex_unlock(p->rf);
