@@ -14,11 +14,14 @@
 
 t_sophia	_usleep(t_time t)
 {
-	t_time	time_up;
+	t_sophia	_sleep;
+	t_time		time_up;
 
+	_sleep = 100;
+	((t < 100) && (_sleep = t));
 	time_up = _time() + t;
 	while (_time() < time_up)
-		usleep(100);
+		usleep(_sleep);
 	return (DONE);
 }
 
@@ -32,10 +35,12 @@ t_sophia	create_philosophers(t_philos *p)
 	_time();
 	while (loop)
 	{
-		if (!(i % 2) && pthread_create(&(p[i].t), NULL, sophia_routine, p + i))
+		p->timer = _time();
+		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i)
+			|| pthread_detach(p[i].t))
 			return (ERROR);
 		i += 2;
-		(i < p->args->philo_num || (!(i % 2) && (i = EXIST) && _usleep(500))
+		(i < p->args->philo_num || (!(i % 2) && (i = EXIST) && _usleep(1000))
 			|| (loop = BREAK));
 	}
 	return (SUCCESS);
@@ -46,7 +51,8 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 	t_sophia	i;
 
 	i = -1;
-	if (pthread_mutex_init(&(args->pass_mtx), NULL)
+	args->pass_mtx = (t_mtx *)malloc(sizeof(t_mtx));
+	if (pthread_mutex_init(args->pass_mtx, NULL)
 		|| pthread_mutex_init(&(args->meals_mtx), NULL))
 		return (ERROR);
 	args->total_done_eating = 0;
@@ -55,8 +61,8 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 		p[i].id = i + 1;
 		p[i].args = args;
 		p[i].meals_count = 0;
-		p[i].timer = 0;
 		p[i].lf = args->forks + i;
+		p[i].write = args->pass_mtx;
 		if (pthread_mutex_init(p[i].lf, NULL)
 			|| pthread_mutex_init(&(p[i].critical_mtx), NULL))
 			return (ERROR);
@@ -73,7 +79,7 @@ void	stop_simulation(t_philos *p)
 	t_sophia	i;
 
 	i = -1;
-	pthread_mutex_destroy(&(p->args->pass_mtx));
+	pthread_mutex_destroy(p->args->pass_mtx);
 	while (++i < p->args->philo_num)
 		(pthread_mutex_destroy(p[i].lf)
 			|| pthread_mutex_destroy(&(p[i].critical_mtx)));
