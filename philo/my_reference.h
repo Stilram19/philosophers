@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/01 18:09:46 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/01 18:39:05 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct s_philos
 	t_time		timer;
 	t_mtx		*lf;
 	t_mtx		*rf;
-	t_mtx		*write;
 	t_mtx		critical_mtx;
 	pthread_t	t;
 	t_args		*args;

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/01 18:12:32 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/01 18:55:05 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ t_sophia	supervising(t_philos *p)
 		{
 			// pthread_mutex_lock(&(p->args->pass_mtx));
 			pthread_mutex_lock(&(p[i].critical_mtx));
-			if (_time() - p[i].timer >= (p->args->time_to_die) * 1000)
+			if (_time() - p[i].timer >= (p->args->time_to_die) * 1000
+				&& p->meals_count != p->args->number_of_meals)
 			{
-				pthread_mutex_lock(p->write);
+				pthread_mutex_lock(p->args->pass_mtx);
 				printf("%ld %d died\n", _time() / 1000, p[i].id);
 				return (SUCCESS);
 			}
@@ -66,9 +67,6 @@ t_sophia	supervising(t_philos *p)
 			if (p->args->total_done_eating == p->args->philo_num)
 				return (SUCCESS);
 			pthread_mutex_unlock(&(p->args->meals_mtx));
-			// pthread_mutex_unlock(&(p->args->pass_mtx));
-			//_usleep(50);
-			// _usleep(5000 / p->args->philo_num);
 			usleep(50);
 		}
 		//usleep(50);
@@ -78,10 +76,10 @@ t_sophia	supervising(t_philos *p)
 
 void	print_after_pass(t_philos *p, const char *state)
 {
-	pthread_mutex_lock(p->write);
+	pthread_mutex_lock(p->args->pass_mtx);
 	//_usleep(40);
 	printf("%ld %d %s\n", _time() / 1000, p->id, state);
-	pthread_mutex_unlock(p->write);
+	pthread_mutex_unlock(p->args->pass_mtx);
 }
 
 void	*sophia_routine(void *arg)
@@ -91,8 +89,8 @@ void	*sophia_routine(void *arg)
 	p = arg;
 	while (EXIST)
 	{
-		//if (p->meals_count == p->args->number_of_meals)
-			//continue ;
+		if (p->meals_count == p->args->number_of_meals)
+			return ;
 		pthread_mutex_lock(p->lf);
 		print_after_pass(p, "has taken his left fork");// remove
 		pthread_mutex_lock(p->rf);
@@ -103,7 +101,7 @@ void	*sophia_routine(void *arg)
 		print_after_pass(p, "is sleeping");
 		_usleep(p->args->time_to_sleep * 1000);
 		print_after_pass(p, "is thinking");
-		_usleep(50);
+		usleep(50);
 	}
 	return (NULL);
 }

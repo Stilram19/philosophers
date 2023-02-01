@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:40:58 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/31 11:21:48 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/01 18:40:53 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_sophia	extrem_test(char *arg)
 	return (INVALID);
 }
 
-t_sophia	detecting_fallacies(int argc, char **argv, t_sophia *args)
+t_sophia	detecting_fallacies(int argc, char **argv, t_args *args)
 {
 	t_sophia	i;
 	t_sophia	boolean;

@@ -51,7 +51,7 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 	t_sophia	i;
 
 	i = -1;
-	args->pass_mtx = (t_mtx *)malloc(sizeof(t_mtx));
+	args->pass_mtx = malloc(sizeof(t_mtx));
 	if (pthread_mutex_init(args->pass_mtx, NULL)
 		|| pthread_mutex_init(&(args->meals_mtx), NULL))
 		return (ERROR);
@@ -62,7 +62,6 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 		p[i].args = args;
 		p[i].meals_count = 0;
 		p[i].lf = args->forks + i;
-		p[i].write = args->pass_mtx;
 		if (pthread_mutex_init(p[i].lf, NULL)
 			|| pthread_mutex_init(&(p[i].critical_mtx), NULL))
 			return (ERROR);
