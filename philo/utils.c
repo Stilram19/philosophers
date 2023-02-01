@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/01 18:55:05 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/01 20:41:26 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,19 @@ void	critical_section(t_philos *p)
 	pthread_mutex_unlock(&(p->critical_mtx));
 	print_after_pass(p, "is eating");
 	_usleep(p->args->time_to_eat * 1000);
+	//pthread_mutex_lock(&(p->critical_mtx));
 	if (!(p->meals_count + 1))
 		return ;
 	p->meals_count++;
 	if (p->meals_count == p->args->number_of_meals)
 	{
+		//pthread_mutex_unlock(&(p->critical_mtx));
 		pthread_mutex_lock(&(p->args->meals_mtx));
 		p->args->total_done_eating++;
 		pthread_mutex_unlock(&(p->args->meals_mtx));
+		return ;
 	}
+	//pthread_mutex_unlock(&(p->critical_mtx));
 }
 
 t_sophia	supervising(t_philos *p)
@@ -53,7 +57,6 @@ t_sophia	supervising(t_philos *p)
 		i = -1;
 		while (++i < p->args->philo_num)
 		{
-			// pthread_mutex_lock(&(p->args->pass_mtx));
 			pthread_mutex_lock(&(p[i].critical_mtx));
 			if (_time() - p[i].timer >= (p->args->time_to_die) * 1000
 				&& p->meals_count != p->args->number_of_meals)
@@ -69,7 +72,6 @@ t_sophia	supervising(t_philos *p)
 			pthread_mutex_unlock(&(p->args->meals_mtx));
 			usleep(50);
 		}
-		//usleep(50);
 	}
 	return (SUCCESS);
 }
@@ -77,7 +79,6 @@ t_sophia	supervising(t_philos *p)
 void	print_after_pass(t_philos *p, const char *state)
 {
 	pthread_mutex_lock(p->args->pass_mtx);
-	//_usleep(40);
 	printf("%ld %d %s\n", _time() / 1000, p->id, state);
 	pthread_mutex_unlock(p->args->pass_mtx);
 }
@@ -90,7 +91,7 @@ void	*sophia_routine(void *arg)
 	while (EXIST)
 	{
 		if (p->meals_count == p->args->number_of_meals)
-			return ;
+			return (NULL);
 		pthread_mutex_lock(p->lf);
 		print_after_pass(p, "has taken his left fork");// remove
 		pthread_mutex_lock(p->rf);
