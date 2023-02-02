@@ -44,7 +44,7 @@ void	*create_philosophers(void *args)
 			|| pthread_detach(p[i].t))
 			return (PERROR);
 		i += 2;
-		(i < p->args->philo_num || (!(i % 2) && (i = EXIST) && _usleep(1000))
+		(i < p->args->philo_num || (!(i % 2) && (i = EXIST) && _usleep(1500))
 			|| (loop = BREAK));
 	}
 	if (supervising(p))

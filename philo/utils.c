@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/02 18:55:16 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/02 20:44:00 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	critical_section(t_philos *p)
 
 t_sophia	supervising(t_philos *p)
 {
-	t_sophia		i;
+	t_sophia	i;
 
 	while (EXIST)
 	{
@@ -104,13 +104,13 @@ void	*sophia_routine(void *arg)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&(p->critical_mtx));
-		//pthread_mutex_lock(p->lf);
-		print_after_pass(p, "has taken his left fork");// remove
-		//pthread_mutex_lock(p->rf);
-		print_after_pass(p, "has taken his right fork");// remove
-		//critical_section(p);
-		//pthread_mutex_unlock(p->rf);
-		//pthread_mutex_unlock(p->lf);
+		pthread_mutex_lock(p->lf);
+		print_after_pass(p, "has taken his fork");
+		pthread_mutex_lock(p->rf);
+		print_after_pass(p, "has taken his fork");
+		critical_section(p);
+		pthread_mutex_unlock(p->rf);
+		pthread_mutex_unlock(p->lf);
 		print_after_pass(p, "is sleeping");
 		_usleep(p->args->time_to_sleep * 1000);
 		print_after_pass(p, "is thinking");
