@@ -32,6 +32,7 @@ t_sophia	create_philosophers(t_philos *p)
 
 	i = NIHIL;
 	loop = LOOP;
+	p->args->print_pass = GO;
 	_time();
 	while (loop)
 	{
@@ -52,8 +53,10 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 
 	i = -1;
 	args->pass_mtx = malloc(sizeof(t_mtx));
-	if (pthread_mutex_init(args->pass_mtx, NULL)
-		|| pthread_mutex_init(&(args->meals_mtx), NULL))
+	args->meals_mtx = malloc(sizeof(t_mtx));
+	if (!(args->pass_mtx && args->meals_mtx)
+		|| pthread_mutex_init(args->pass_mtx, NULL)
+		|| pthread_mutex_init(args->meals_mtx, NULL))
 		return (ERROR);
 	args->total_done_eating = 0;
 	while (++i < args->philo_num)

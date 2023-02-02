@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:24:00 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/01 18:39:05 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:30:49 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define LOOP 1
 # define DONE 1
 # define SUCCESS 0
+# define GO 1
+# define STOP 0
 
 # define EXTREM "2147483647"
 
@@ -41,7 +43,8 @@ typedef struct s_args
 	t_sophia		time_to_sleep;
 	t_sophia		number_of_meals;
 	t_sophia		total_done_eating;
-	t_mtx			meals_mtx;
+	t_sophia		print_pass;
+	t_mtx			*meals_mtx;
 	t_mtx			*pass_mtx;
 	t_mtx			*forks;
 }t_args;
