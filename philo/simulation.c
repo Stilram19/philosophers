@@ -25,26 +25,31 @@ t_sophia	_usleep(t_time t)
 	return (DONE);
 }
 
-t_sophia	create_philosophers(t_philos *p)
+void	*create_philosophers(void *args)
 {
 	t_sophia	i;
 	t_sophia	loop;
+	t_philos	*p;
 
 	i = NIHIL;
 	loop = LOOP;
-	p->args->print_pass = GO;
+	p = args;
 	_time();
 	while (loop)
 	{
-		p->timer = _time();
+		pthread_mutex_lock(&(p->critical_mtx));
+		p[i].timer = _time();
+		pthread_mutex_unlock(&(p->critical_mtx));
 		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i)
 			|| pthread_detach(p[i].t))
-			return (ERROR);
+			return (PERROR);
 		i += 2;
 		(i < p->args->philo_num || (!(i % 2) && (i = EXIST) && _usleep(1000))
 			|| (loop = BREAK));
 	}
-	return (SUCCESS);
+	if (supervising(p))
+		return (PERROR);
+	return (PSUCCESS);
 }
 
 t_sophia	simulation_init(t_philos *p, t_args *args)
@@ -52,11 +57,8 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 	t_sophia	i;
 
 	i = -1;
-	args->pass_mtx = malloc(sizeof(t_mtx));
-	args->meals_mtx = malloc(sizeof(t_mtx));
-	if (!(args->pass_mtx && args->meals_mtx)
-		|| pthread_mutex_init(args->pass_mtx, NULL)
-		|| pthread_mutex_init(args->meals_mtx, NULL))
+	if (pthread_mutex_init(&(args->pass_mtx), NULL)
+		|| pthread_mutex_init(&(args->meals_mtx), NULL))
 		return (ERROR);
 	args->total_done_eating = 0;
 	while (++i < args->philo_num)
@@ -81,7 +83,8 @@ void	stop_simulation(t_philos *p)
 	t_sophia	i;
 
 	i = -1;
-	pthread_mutex_destroy(p->args->pass_mtx);
+	pthread_mutex_destroy(&(p->args->pass_mtx));
+	pthread_mutex_destroy(&(p->args->meals_mtx));
 	while (++i < p->args->philo_num)
 		(pthread_mutex_destroy(p[i].lf)
 			|| pthread_mutex_destroy(&(p[i].critical_mtx)));
@@ -95,14 +98,19 @@ t_sophia	start_simulation(t_args *args)
 {
 	t_sophia	ret;
 	t_philos	*p;
+	void		*value;
 
+	value = PSUCCESS;
 	if (!(args->philo_num))
 		return (SUCCESS);
 	p = malloc(sizeof(t_philos) * args->philo_num);
 	(p && (args->forks = malloc(sizeof(t_mtx) * args->philo_num)));
 	ret = !(p && args->forks);
-	(ret || (ret = (simulation_init(p, args) || create_philosophers(p)
-				|| supervising(p))));
+	(ret || (ret = (simulation_init(p, args)
+				|| pthread_create(&(args->supervisor),
+					NULL, create_philosophers, p)
+				|| pthread_join(args->supervisor, &value)
+				|| (value && (ret = ERROR)))));
 	stop_simulation(p);
 	return (ret);
 }
