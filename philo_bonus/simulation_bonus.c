@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:24:14 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/03 18:50:21 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:49:37 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,12 @@ void	print_after_pass(const char *str, sem_t *print_sem, int id)
 
 void	child_process_routine(t_args *args, int i)
 {
-	t_time	timer;
+	pthread_t	supervisor;
+	t_time		timer;
 
 	timer = _timer();
+	if (pthread_create(&supervisor, NULL, supervisor, NULL))
+		exit(EXIT_FAILURE);
 	while (EXIST)
 	{
 		sem_wait(args->forks);
@@ -58,6 +61,9 @@ void	child_process_routine(t_args *args, int i)
 		sem_wait(args->forks);
 		print_after_pass("has taken a fork", args->print, i + 1);
 		print_after_pass("is eating", args->print, i + 1);
+		if (_time() - timer >= args->time_to_die * 1000)
+			exit(EXIT_FAILURE);
+		timer = _time();
 		_usleep(args->time_to_eat * 1000);
 		sem_post(args->forks);
 		sem_post(args->forks);
@@ -69,17 +75,30 @@ void	child_process_routine(t_args *args, int i)
 
 void	create_philosophers(t_args *args)
 {
-	int	i;
+	t_sophia	i;
+	t_sophia	status;
 
 	i = 0;
 	while (i < args->philo_num)
 	{
 		args->pids[i] = fork();
+		if (!(args->pids[i] + 1))
+			exit(EXIT_FAILURE);
 		if (!(args->pids[i]))
 			child_process_routine(args, i);
 		_usleep(50);
 		i++;
 	}
+	i = -1;
+	while (++i < args->philo_num)
+	{
+		waitpid(args->pids, &status, 0);
+		if (status == EXIT_FAILURE)
+			break ;
+	}
+	sem_wait(args->print);
+	while (++i < args->philo_num)
+		kill(args->pids[i], SIGTERM);
 }
 
 sem_t	_sem_open(const char *path_name, int sem_value)
@@ -92,20 +111,31 @@ sem_t	_sem_open(const char *path_name, int sem_value)
 	return (sem);
 }
 
-void	start_simulation(t_args *args)
+void	simulation_init(t_args *args)
 {
-	t_sophia	i;
 	t_sophia	b;
 
-	i = -1;
 	b = 0;
 	args->forks = _sem_open("/forks", args->philo_num);
 	args->print = _sem_open("/print", 1);
-	args->timer_sem = malloc(sizeof(sem_t *) * args->philo_num);
-	(args->timer_sem || (args->pids = malloc(sizeof(pid_t) * args->philo_num)));
-	if (!(args->timer_sem && args->pids))
+	args->pids = malloc(sizeof(pid_t) * args->philo_num);
+	if (!(args->pids))
 		exit(EXIT_FAILURE);
-	while (++i < args->philo_num)
-		args->timer_sem = _sem_open("/timer_sem", 1);
+}
+
+void	clean_up(t_args *args)
+{
+	sem_unlink("/print");
+	sem_unlink("/forks");
+	sem_close(args->forks);
+	sem_close(args->print);
+}
+
+void	start_simulation(t_args *args)
+{
+	if (!(args->philo_num))
+		exit(EXIT_SUCCESS);
+	simulation_init(args);
 	create_philosophers(args);
+	clean_up(args);
 }

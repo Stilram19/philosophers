@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:30:48 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/03 18:36:17 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:25:28 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_args
 	pid_t		*pids;
 	sem_t		*forks;
 	sem_t		*print;
-	sem_t		**timer_sem;
 }t_args;
 
 #endif

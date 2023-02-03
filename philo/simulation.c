@@ -76,7 +76,7 @@ t_sophia	simulation_init(t_philos *p, t_args *args)
 	return (SUCCESS);
 }
 
-void	stop_simulation(t_philos *p)
+void	clean_up(t_philos *p)
 {
 	t_sophia	i;
 
@@ -104,6 +104,6 @@ t_sophia	start_simulation(t_args *args, t_philos **ptr_to_p)
 					NULL, create_philosophers, *ptr_to_p)
 				|| pthread_join(args->supervisor, &value)
 				|| (value && (ret = ERROR)))));
-	stop_simulation(*ptr_to_p);
+	clean_up(*ptr_to_p);
 	return (ret);
 }
