@@ -44,7 +44,8 @@ void	*create_philosophers(void *args)
 			|| pthread_detach(p[i].t))
 			return (PERROR);
 		i += 2;
-		(i < p->args->philo_num || (!(i % 2) && (i = EXIST) && _usleep(1500))
+		(i < p->args->philo_num || (!(i % 2) && (i = (p->args->philo_num != 1))
+				&& _usleep(1500))
 			|| (loop = BREAK));
 	}
 	if (supervising(p))
@@ -88,29 +89,24 @@ void	stop_simulation(t_philos *p)
 	while (++i < p->args->philo_num)
 		(pthread_mutex_destroy(p[i].lf)
 			|| pthread_mutex_destroy(&(p[i].critical_mtx)));
-	if (p)
-		free(p);
-	if (p->args->forks)
-		free(p->args->forks);
 }
 
-t_sophia	start_simulation(t_args *args)
+t_sophia	start_simulation(t_args *args, t_philos **ptr_to_p)
 {
 	t_sophia	ret;
-	t_philos	*p;
 	void		*value;
 
 	value = PSUCCESS;
 	if (!(args->philo_num))
 		return (SUCCESS);
-	p = malloc(sizeof(t_philos) * args->philo_num);
-	(p && (args->forks = malloc(sizeof(t_mtx) * args->philo_num)));
-	ret = !(p && args->forks);
-	(ret || (ret = (simulation_init(p, args)
+	*ptr_to_p = malloc(sizeof(t_philos) * args->philo_num);
+	(*ptr_to_p && (args->forks = malloc(sizeof(t_mtx) * args->philo_num)));
+	ret = !(*ptr_to_p && args->forks);
+	(ret || (ret = (simulation_init(*ptr_to_p, args)
 				|| pthread_create(&(args->supervisor),
-					NULL, create_philosophers, p)
+					NULL, create_philosophers, *ptr_to_p)
 				|| pthread_join(args->supervisor, &value)
 				|| (value && (ret = ERROR)))));
-	stop_simulation(p);
+	stop_simulation(*ptr_to_p);
 	return (ret);
 }
