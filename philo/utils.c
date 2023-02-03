@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/02 20:44:00 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:34:58 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	*sophia_routine(void *arg)
 	t_philos	*p;
 
 	p = arg;
+	p->timer = _time();
 	while (EXIST)
 	{
 		pthread_mutex_lock(&(p->critical_mtx));

@@ -37,9 +37,6 @@ void	*create_philosophers(void *args)
 	_time();
 	while (loop)
 	{
-		pthread_mutex_lock(&(p->critical_mtx));
-		p[i].timer = _time();
-		pthread_mutex_unlock(&(p->critical_mtx));
 		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i)
 			|| pthread_detach(p[i].t))
 			return (PERROR);
