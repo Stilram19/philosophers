@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:05:06 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 21:32:16 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 21:49:56 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	*supervising(void *arg)
 		if ((args->meals_num + 1) && args->eaten_meals >= args->meals_num)
 			child_exit(args, DONE_EATING_EXIT);
 		sem_post(args->data_race.sem);
-		_usleep(50);
+		usleep(200);
 	}
 	return (NULL);
 }
