@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:40:58 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/01 18:40:53 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 16:36:23 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_sophia	safe_atoi(char *str)
 
 	ret = NIHIL;
 	((*str == '+') && (str++));
-	while (*str <= 48 && *str <= 57)
+	while (*str >= 48 && *str <= 57)
 	{
 		ret *= 10;
 		ret += (*str - 48);
@@ -71,5 +71,6 @@ t_sophia	detecting_fallacies(int argc, char **argv, t_args *args)
 		(boolean && (*ptr_to_field = safe_atoi(*(argv + i))));
 		ptr_to_field++;
 	}
+	(argc == 6 || (args->meals_num = -1));
 	return (!boolean);
 }

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:30:48 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 09:51:13 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:44:14 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,18 @@
 # define INVALID 0
 # define ERROR 1
 # define DONE 1
+# define DONE_EATING_EXIT 0
+# define DEATH_EXIT 2
 # define EXTREM "2147483647"
 
 typedef int		t_sophia;
 typedef long	t_time;
+
+typedef struct s_sem
+{
+	sem_t	*sem;
+	char	*name;
+}t_sem;
 
 typedef struct s_args
 {
@@ -34,8 +42,9 @@ typedef struct s_args
 	t_sophia	eaten_meals;
 	t_sophia	timer;
 	pid_t		*pids;
-	sem_t		*forks;
-	sem_t		*print;
+	t_sem		forks;
+	t_sem		print;
+	t_sem		data_race;
 }t_args;
 
 #endif

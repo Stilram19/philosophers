@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 13:17:24 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/03 16:41:36 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:58:33 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,15 @@
 
 int	main(void)
 {
-	sem_t	*s;
+	int	pid;
+	int	status;
 
-	s = sem_open("/semaphorreeee", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
-
-	if (s == SEM_FAILED)
-		return (1);
-	sem_wait(s);
-	printf("HELLO\n");
-	sem_post(s);
-	sem_unlink("/semaphorreeee");
-	sem_close(s);
+	pid = fork();
+	if (!pid)
+	{
+		exit(2);
+	}
+	waitpid(pid, &status, 0);
+	printf("%d\n", WEXITSTATUS(status));
 	return (0);
 }

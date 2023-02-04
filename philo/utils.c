@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/03 18:34:58 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 14:00:50 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,24 @@ t_sophia	supervising(t_philos *p)
 {
 	t_sophia	i;
 
-	while (EXIST)
+	i = -1;
+	while (++i < p->args->philo_num)
 	{
-		i = -1;
-		while (++i < p->args->philo_num)
+		pthread_mutex_lock(&(p[i].critical_mtx));
+		if (_time() - p[i].timer >= (p->args->time_to_die) * 1000
+			&& p[i].meals_count != p->args->number_of_meals)
 		{
-			pthread_mutex_lock(&(p[i].critical_mtx));
-			if (_time() - p[i].timer >= (p->args->time_to_die) * 1000
-				&& p[i].meals_count != p->args->number_of_meals)
-			{
-				pthread_mutex_lock(&(p->args->pass_mtx));
-				printf("%ld %d died\n", _time() / 1000, p[i].id);
-				return (SUCCESS);
-			}
-			pthread_mutex_unlock(&(p[i].critical_mtx));
-			pthread_mutex_lock(&(p->args->meals_mtx));
-			if (p->args->total_done_eating == p->args->philo_num)
-				return (SUCCESS);
-			pthread_mutex_unlock(&(p->args->meals_mtx));
-			usleep(50);
+			pthread_mutex_lock(&(p->args->pass_mtx));
+			printf("%ld %d died\n", _time() / 1000, p[i].id);
+			return (SUCCESS);
 		}
+		pthread_mutex_unlock(&(p[i].critical_mtx));
+		pthread_mutex_lock(&(p->args->meals_mtx));
+		if (p->args->total_done_eating == p->args->philo_num)
+			return (SUCCESS);
+		pthread_mutex_unlock(&(p->args->meals_mtx));
+		usleep(50);
+		((i == p->args->philo_num - 1) && (i = -1));
 	}
 	return (SUCCESS);
 }
