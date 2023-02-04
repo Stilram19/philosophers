@@ -7,13 +7,13 @@ SRCS=	main.c \
 OBJS=	${SRCS:.c=.o}
 NAME=	philo_bonus
 CC=		cc
-CFLAGS=	-Wall -Wextra -Werror
+CFLAGS=	-Wall -Wextra -Werror -fsanitize=address
 RM=		rm -f
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${CC} ${OBJS} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 clean:
 	${RM} ${OBJS}

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:24:14 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 18:55:07 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 21:47:09 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ void	child_process_routine(t_args *args, int i)
 
 void	create_philosophers(t_args *args)
 {
-	t_sophia	i;
+	t_sophia		i;
 
 	i = -1;
+	_time();
 	while (++i < args->philo_num)
 	{
 		args->pids[i] = fork();
