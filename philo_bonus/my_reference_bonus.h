@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:30:48 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/03 20:25:28 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 09:51:13 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_args
 	t_sophia	time_to_eat;
 	t_sophia	time_to_sleep;
 	t_sophia	meals_num;
+	t_sophia	eaten_meals;
+	t_sophia	timer;
 	pid_t		*pids;
 	sem_t		*forks;
 	sem_t		*print;

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:24:14 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/03 20:49:37 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/04 09:52:26 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,28 @@ void	print_after_pass(const char *str, sem_t *print_sem, int id)
 	sem_post(print_sem);
 }
 
+void	supervisor(t_args *args)
+{
+	t_sophia	i;
+
+	while (EXIST)
+	{
+		i = -1;
+		while (++i < args->philo_num)
+		{
+			if (_time() - args->timer >= args->time_to_die)
+				exit(EXIT_FAILURE);
+		}
+	}
+}
+
 void	child_process_routine(t_args *args, int i)
 {
 	pthread_t	supervisor;
-	t_time		timer;
 
-	timer = _timer();
-	if (pthread_create(&supervisor, NULL, supervisor, NULL))
+	args->timer = _timer();
+	if (pthread_create(&supervisor, NULL, supervisor, args)
+		|| pthread_join(supervisor, NULL))
 		exit(EXIT_FAILURE);
 	while (EXIST)
 	{
@@ -61,9 +76,9 @@ void	child_process_routine(t_args *args, int i)
 		sem_wait(args->forks);
 		print_after_pass("has taken a fork", args->print, i + 1);
 		print_after_pass("is eating", args->print, i + 1);
-		if (_time() - timer >= args->time_to_die * 1000)
+		if (_time() - args->timer >= args->time_to_die * 1000)
 			exit(EXIT_FAILURE);
-		timer = _time();
+		args->timer = _time();
 		_usleep(args->time_to_eat * 1000);
 		sem_post(args->forks);
 		sem_post(args->forks);
@@ -76,10 +91,9 @@ void	child_process_routine(t_args *args, int i)
 void	create_philosophers(t_args *args)
 {
 	t_sophia	i;
-	t_sophia	status;
 
-	i = 0;
-	while (i < args->philo_num)
+	i = -1;
+	while (++i < args->philo_num)
 	{
 		args->pids[i] = fork();
 		if (!(args->pids[i] + 1))
@@ -87,8 +101,14 @@ void	create_philosophers(t_args *args)
 		if (!(args->pids[i]))
 			child_process_routine(args, i);
 		_usleep(50);
-		i++;
 	}
+}
+
+void	wait_for_philosophers(t_args *args)
+{
+	t_sophia	i;
+	t_sophia	status;
+
 	i = -1;
 	while (++i < args->philo_num)
 	{
@@ -96,6 +116,7 @@ void	create_philosophers(t_args *args)
 		if (status == EXIT_FAILURE)
 			break ;
 	}
+	i = -1;
 	sem_wait(args->print);
 	while (++i < args->philo_num)
 		kill(args->pids[i], SIGTERM);
@@ -137,5 +158,6 @@ void	start_simulation(t_args *args)
 		exit(EXIT_SUCCESS);
 	simulation_init(args);
 	create_philosophers(args);
+	wait_for_philosophers(args);
 	clean_up(args);
 }
