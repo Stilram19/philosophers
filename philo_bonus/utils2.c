@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:41:49 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 20:32:03 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 10:24:14 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (join);
 }
 
-void	child_process_init(t_args *args, int i)
+void	child_process_init(t_args *args)
 {
 	pthread_t	supervisor;
 
-	args->data_race.name = ft_strjoin("/philo", ft_itoa(i));
+	args->data_race.name = ft_strjoin("/philo", ft_itoa(args->id));
 	if (!(args->data_race.name))
 		exit(EXIT_FAILURE);
 	args->data_race.sem = _sem_open(args->data_race.name, 1);

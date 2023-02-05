@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 13:17:24 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 17:58:33 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 10:53:13 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,24 @@
 
 int	main(void)
 {
-	int	pid;
+	int	pid1;
+	int	pid2;
 	int	status;
 
-	pid = fork();
-	if (!pid)
+	pid1 = fork();
+	if (!pid1)
 	{
-		exit(2);
+		//printf("Hello from child!\n");
+		while (1);
 	}
-	waitpid(pid, &status, 0);
+	pid2 = fork();
+	if (!pid2)
+	{
+		exit(5);
+	}
+	//waitpid(0, &status, 0);
+	//waitpid(pid2, &status, 0);
+	waitpid(pid1, &status, 0);
 	printf("%d\n", WEXITSTATUS(status));
 	return (0);
 }

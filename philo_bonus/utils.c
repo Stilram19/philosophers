@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:05:06 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 21:49:56 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:45:50 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,17 @@ void	*supervising(void *arg)
 	args = arg;
 	while (EXIST)
 	{
-		sem_wait(args->data_race.sem);
+		//sem_wait(args->data_race.sem);
 		if (_time() - args->timer >= args->time_to_die * 1000)
+		{
+			sem_wait(args->print.sem);
+			printf("%ld %d died\n", _time() / 1000, args->id);
 			child_exit(args, DEATH_EXIT);
-		if ((args->meals_num + 1) && args->eaten_meals >= args->meals_num)
-			child_exit(args, DONE_EATING_EXIT);
-		sem_post(args->data_race.sem);
-		usleep(200);
+		}
+		//if ((args->meals_num + 1) && args->eaten_meals >= args->meals_num)
+			//child_exit(args, DONE_EATING_EXIT);
+		//sem_post(args->data_race.sem);
+		_usleep(50);
 	}
 	return (NULL);
 }
