@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:41:55 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 14:40:15 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 17:45:49 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	parent_exit(t_args *args, t_sophia status)
 
 void	child_exit(t_args *args, t_sophia status)
 {
+	free(args->data_race.name);
+	free(args->freeable);
 	sem_unlink(args->data_race.name);
 	exit(status);
 }

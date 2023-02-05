@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:41:49 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 10:24:14 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 17:27:25 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,14 @@ void	child_process_init(t_args *args)
 {
 	pthread_t	supervisor;
 
-	args->data_race.name = ft_strjoin("/philo", ft_itoa(args->id));
+	args->freeable = ft_itoa(args->id);
+	args->data_race.name = ft_strjoin("/philo", args->freeable);
 	if (!(args->data_race.name))
 		exit(EXIT_FAILURE);
 	args->data_race.sem = _sem_open(args->data_race.name, 1);
+	sem_wait(args->data_race.sem);
 	args->timer = _time();
+	sem_post(args->data_race.sem);
 	if (pthread_create(&supervisor, NULL, supervising, args)
 		|| pthread_detach(supervisor))
 		child_exit(args, EXIT_FAILURE);

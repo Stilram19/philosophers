@@ -8,6 +8,7 @@ OBJS=	${SRCS:.c=.o}
 NAME=	philo_bonus
 CC=		cc
 CFLAGS=	-Wall -Wextra -Werror
+#CFLAGS= -fsanitize=thread
 RM=		rm -f
 
 all: ${NAME}

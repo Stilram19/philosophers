@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:30:48 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 10:18:06 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 17:27:55 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_args
 	t_sophia	timer;
 	t_sophia	id;
 	pid_t		*pids;
+	void		*freeable;
 	t_sem		forks;
 	t_sem		print;
 	t_sem		data_race;

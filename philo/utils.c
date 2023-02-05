@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 13:57:29 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 18:00:14 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ t_time	_time(void)
 void	critical_section(t_philos *p)
 {
 	pthread_mutex_lock(&(p->critical_mtx));
-	if (_time() - p->timer >= (p->args->time_to_die) * 1000)
-	{
-		pthread_mutex_unlock(&(p->critical_mtx));
-		while (1)
-			usleep(1000);
-	}
+	// if (_time() - p->timer >= (p->args->time_to_die) * 1000)
+	// {
+	// 	pthread_mutex_unlock(&(p->critical_mtx));
+	// 	while (1)
+	// 		usleep(1000);
+	// }
 	p->timer = _time();
 	pthread_mutex_unlock(&(p->critical_mtx));
 	print_after_pass(p, "is eating");
@@ -98,10 +98,7 @@ void	*sophia_routine(void *arg)
 	{
 		pthread_mutex_lock(&(p->critical_mtx));
 		if (p->meals_count == p->args->number_of_meals)
-		{
-			pthread_mutex_unlock(&(p->critical_mtx));
-			return (NULL);
-		}
+			return (pthread_mutex_unlock(&(p->critical_mtx)), NULL);
 		pthread_mutex_unlock(&(p->critical_mtx));
 		pthread_mutex_lock(p->lf);
 		print_after_pass(p, "has taken a fork");
