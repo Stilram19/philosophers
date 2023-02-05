@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/04 14:00:50 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 13:57:29 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	*sophia_routine(void *arg)
 		}
 		pthread_mutex_unlock(&(p->critical_mtx));
 		pthread_mutex_lock(p->lf);
-		print_after_pass(p, "has taken his fork");
+		print_after_pass(p, "has taken a fork");
 		pthread_mutex_lock(p->rf);
-		print_after_pass(p, "has taken his fork");
+		print_after_pass(p, "has taken a fork");
 		critical_section(p);
 		pthread_mutex_unlock(p->rf);
 		pthread_mutex_unlock(p->lf);
