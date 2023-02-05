@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:24:14 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 17:55:51 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 21:29:10 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,12 @@ void	create_philosophers(t_args *args)
 			args->id = i + 1;
 			child_process_routine(args);
 		}
-		usleep(200);
 	}
 }
 
 void	wait_for_philosophers(t_args *args)
 {
 	t_sophia	i;
-	//t_sophia	dead_philos;
 	t_sophia	status;
 
 	i = -1;
@@ -72,11 +70,7 @@ void	wait_for_philosophers(t_args *args)
 		if (WEXITSTATUS(status) == EXIT_FAILURE)
 			parent_exit(args, EXIT_FAILURE);
 	}
-	//dead_philos = i + 1;
 	i = -1;
-	//sem_wait(args->print.sem);
-	//if (WEXITSTATUS(status) == DEATH_EXIT)
-	//	printf("%ld %d died\n", _time() / 1000, dead_philos);
 	while (++i < args->philo_num)
 		kill(args->pids[i], SIGTERM);
 }

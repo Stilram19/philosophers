@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:12:27 by obednaou          #+#    #+#             */
-/*   Updated: 2023/01/15 16:29:02obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 19:46:05 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_sophia	_usleep(t_time t)
 	t_time		time_up;
 
 	_sleep = 100;
-	((t < 100) && (_sleep = t));
+	((t < 100) && (_sleep = 10));
 	time_up = _time() + t;
 	while (_time() < time_up)
 		usleep(_sleep);
@@ -34,7 +34,6 @@ void	*create_philosophers(void *args)
 	i = NIHIL;
 	loop = LOOP;
 	p = args;
-	_time();
 	while (loop)
 	{
 		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i)
@@ -42,7 +41,7 @@ void	*create_philosophers(void *args)
 			return (PERROR);
 		i += 2;
 		(i < p->args->philo_num || (!(i % 2) && (i = (p->args->philo_num != 1))
-				&& _usleep(1500))
+				&& _usleep(1000))
 			|| (loop = BREAK));
 	}
 	if (supervising(p))

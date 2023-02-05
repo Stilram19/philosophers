@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:41:49 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 17:27:25 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 21:26:13 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	child_process_init(t_args *args)
 		exit(EXIT_FAILURE);
 	args->data_race.sem = _sem_open(args->data_race.name, 1);
 	sem_wait(args->data_race.sem);
+	if (!(args->id % 2))
+		_usleep(1000);
 	args->timer = _time();
 	sem_post(args->data_race.sem);
 	if (pthread_create(&supervisor, NULL, supervising, args)

@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:05:06 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 17:01:44 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 21:26:24 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_sophia	_usleep(t_time t)
 	t_time		time_up;
 
 	_sleep = 100;
-	((t < 100) && (_sleep = t));
+	((t < 100) && (_sleep = 10));
 	time_up = _time() + t;
 	while (_time() < time_up)
 		usleep(_sleep);
@@ -74,7 +74,7 @@ void	*supervising(void *arg)
 		//if ((args->meals_num + 1) && args->eaten_meals >= args->meals_num)
 			//child_exit(args, DONE_EATING_EXIT);
 		sem_post(args->data_race.sem);
-		usleep(50);
+		_usleep(100);
 	}
 	return (NULL);
 }
