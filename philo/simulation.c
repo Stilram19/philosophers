@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:12:27 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 19:46:05 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:55:21 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,38 @@ t_sophia	_usleep(t_time t)
 	t_sophia	_sleep;
 	t_time		time_up;
 
-	_sleep = 100;
-	((t < 100) && (_sleep = 10));
+	_sleep = 150;
+	((t < 150) && (_sleep = t));
 	time_up = _time() + t;
 	while (_time() < time_up)
 		usleep(_sleep);
 	return (DONE);
 }
+
+/*int	us_timer(struct timeval start, struct timeval end)
+{
+	int	total;
+
+	total = ((end.tv_sec - start.tv_sec) * 1e6) + ((end.tv_usec
+				- start.tv_usec));
+	return (total);
+}
+
+t_sophia	_usleep(t_time time_to_sleep)
+{
+	struct timeval	p0;
+	struct timeval	p1;
+
+	gettimeofday(&p0, 0);
+	while (1)
+	{
+		gettimeofday(&p1, 0);
+		if (us_timer(p0, p1) >= time_to_sleep)
+			break ;
+		usleep(300);
+	}
+	return (DONE);
+}*/
 
 void	*create_philosophers(void *args)
 {
@@ -87,7 +112,7 @@ void	clean_up(t_philos *p)
 			|| pthread_mutex_destroy(&(p[i].critical_mtx)));
 }
 
-t_sophia	start_simulation(t_args *args, t_philos **ptr_to_p)
+t_sophia	simulation(t_args *args, t_philos **ptr_to_p)
 {
 	t_sophia	ret;
 	void		*value;
@@ -103,6 +128,8 @@ t_sophia	start_simulation(t_args *args, t_philos **ptr_to_p)
 					NULL, create_philosophers, *ptr_to_p)
 				|| pthread_join(args->supervisor, &value)
 				|| (value && (ret = ERROR)))));
+	/*(ret || (ret = (simulation_init(*ptr_to_p, args)
+				|| create_philosophers(*ptr_to_p))));*/
 	clean_up(*ptr_to_p);
 	return (ret);
 }
