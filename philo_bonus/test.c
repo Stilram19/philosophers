@@ -4,14 +4,21 @@
 
 int	main(void)
 {
-	int	pid;
+	int	pid1;
+	int	pid2;
 	int	status;
 
-	pid = fork();
-	if (!pid)
+	pid1 = fork();
+	if (!pid1)
+		while (1);
+	
+	pid2 = fork();
+	if (!pid2)
 		while (1);
 	waitpid(0, &status, 0);
+	waitpid(0, &status, 0);
+	
 	printf("%d\n", WEXITSTATUS(status));
-	kill(pid, SIGTERM);
+	//kill(pid1, SIGTERM);
 	return (0);
 }
