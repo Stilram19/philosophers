@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:30:48 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 17:27:55 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/06 17:19:57 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define INVALID 0
 # define ERROR 1
 # define DONE 1
-# define DONE_EATING_EXIT 0
+# define DONE_EATING_EXIT 3
 # define DEATH_EXIT 2
 # define EXTREM "2147483647"
 

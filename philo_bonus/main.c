@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 20:26:47 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 17:29:06 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:50:01 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int	main(int argc, char **argv)
 	if (detecting_fallacies(argc, argv, &args))
 		return (EXIT_FAILURE);
 	simulation(&args);
-	//system("leaks philo_bonus");
+	system("leaks philo_bonus");
 	return (EXIT_SUCCESS);
 }

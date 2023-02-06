@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:24:14 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/05 21:29:10 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/06 17:45:43 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void	child_process_routine(t_args *args)
 		print_after_pass("has taken a fork", args->print.sem, args->id);
 		print_after_pass("is eating", args->print.sem, args->id);
 		sem_wait(args->data_race.sem);
+		/*if (args->timer - _time() >= args->time_to_die * 1000000)
+		{
+			sem_wait(args->print.sem);
+			printf("%ld %d died\n", _time() / 1000, args->id);
+			child_exit(args, DEATH_EXIT);
+		}*/
 		args->timer = _time();
 		sem_post(args->data_race.sem);
 		_usleep(args->time_to_eat * 1000);
@@ -34,7 +40,7 @@ void	child_process_routine(t_args *args)
 		print_after_pass("is sleeping", args->print.sem, args->id);
 		_usleep(args->time_to_sleep * 1000);
 		print_after_pass("is thinking", args->print.sem, args->id);
-		usleep(50);
+		_usleep(50);
 	}
 }
 
@@ -67,8 +73,9 @@ void	wait_for_philosophers(t_args *args)
 	while ((WEXITSTATUS(status) - 2) && ++i < args->philo_num)
 	{
 		waitpid(0, &status, 0);
-		if (WEXITSTATUS(status) == EXIT_FAILURE)
-			parent_exit(args, EXIT_FAILURE);
+		if (WEXITSTATUS(status) != DEATH_EXIT
+			&& WEXITSTATUS(status) != DONE_EATING_EXIT)
+			break ;
 	}
 	i = -1;
 	while (++i < args->philo_num)

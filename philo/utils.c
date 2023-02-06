@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:03:23 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/06 16:01:37 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:22:39 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ t_time	_time(void)
 void	critical_section(t_philos *p)
 {
 	pthread_mutex_lock(&(p->critical_mtx));
-	if (_time() - p->timer + 100 >= (p->args->time_to_die) * 1000)
+	if (_time() - p->timer - 100 >= (p->args->time_to_die) * 1000)
 	{
 		pthread_mutex_unlock(&(p->critical_mtx));
 		while (1)
 			usleep(10000);
 	}
-	//_usleep(50);
 	p->timer = _time();
 	pthread_mutex_unlock(&(p->critical_mtx));
 	print_after_pass(p, "is eating");
@@ -76,8 +75,6 @@ t_sophia	supervising(t_philos *p)
 		if (p->args->total_done_eating == p->args->philo_num)
 			return (SUCCESS);
 		pthread_mutex_unlock(&(p->args->meals_mtx));
-		//_usleep(10000 / p->args->philo_num);
-		//_usleep(100);
 		_usleep(50);
 		((i == p->args->philo_num - 1) && (i = -1));
 	}
@@ -96,7 +93,9 @@ void	*sophia_routine(void *arg)
 	t_philos	*p;
 
 	p = arg;
+	pthread_mutex_lock(&(p->critical_mtx));
 	p->timer = _time();
+	pthread_mutex_unlock(&(p->critical_mtx));
 	while (EXIST)
 	{
 		pthread_mutex_lock(&(p->critical_mtx));
