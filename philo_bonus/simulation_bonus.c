@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:24:14 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/06 20:50:14 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:44:43 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ void	child_process_routine(t_args *args)
 		print_after_pass("has taken a fork", args->print.sem, args->id);
 		print_after_pass("is eating", args->print.sem, args->id);
 		sem_wait(args->data_race.sem);
-		/*if (args->timer - _time() - 100 >= args->time_to_die * 1000000)
-		{
-			sem_wait(args->print.sem);
-			printf("%ld %d died\n", _time() / 1000, args->id);
-			child_exit(args, DEATH_EXIT);
-		}*/
 		args->timer = _time();
 		sem_post(args->data_race.sem);
 		_usleep(args->time_to_eat * 1000);
@@ -98,7 +92,7 @@ void	simulation_init(t_args *args)
 
 void	simulation(t_args *args)
 {
-	if (!(args->philo_num))
+	if (!(args->philo_num && args->meals_num))
 		exit(EXIT_SUCCESS);
 	simulation_init(args);
 	create_philosophers(args);

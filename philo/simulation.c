@@ -6,7 +6,7 @@
 /*   By: obednaou <obednaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:12:27 by obednaou          #+#    #+#             */
-/*   Updated: 2023/02/06 18:33:00 by obednaou         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:44:21 by obednaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,26 @@ t_sophia	_usleep(t_time t)
 	return (DONE);
 }
 
-void	*create_philosophers(void *args)
+t_sophia	create_philosophers(t_philos *p)
 {
 	t_sophia	i;
 	t_sophia	loop;
-	t_philos	*p;
 
 	i = NIHIL;
 	loop = LOOP;
-	p = args;
 	_time();
 	while (loop)
 	{
 		if (pthread_create(&(p[i].t), NULL, sophia_routine, p + i)
 			|| pthread_detach(p[i].t))
-			return (PERROR);
+			return (ERROR);
 		i += 2;
 		(i < p->args->philo_num || (!(i % 2) && (i = (p->args->philo_num != 1))
-				&& _usleep(1000))
-			|| (loop = BREAK));
+				&& _usleep(1000)) || (loop = BREAK));
 	}
 	if (supervising(p))
-		return (PERROR);
-	return (PSUCCESS);
+		return (ERROR);
+	return (SUCCESS);
 }
 
 t_sophia	simulation_init(t_philos *p, t_args *args)
@@ -91,19 +88,12 @@ void	clean_up(t_philos *p)
 t_sophia	simulation(t_args *args, t_philos **ptr_to_p)
 {
 	t_sophia	ret;
-	void		*value;
 
-	value = PSUCCESS;
-	if (!(args->philo_num))
+	if (!(args->philo_num && args->number_of_meals))
 		return (SUCCESS);
 	*ptr_to_p = malloc(sizeof(t_philos) * args->philo_num);
 	(*ptr_to_p && (args->forks = malloc(sizeof(t_mtx) * args->philo_num)));
 	ret = !(*ptr_to_p && args->forks);
-	/*(ret || (ret = (simulation_init(*ptr_to_p, args)
-				|| pthread_create(&(args->supervisor),
-					NULL, create_philosophers, *ptr_to_p)
-				|| pthread_join(args->supervisor, &value)
-				|| (value && (ret = ERROR)))));*/
 	(ret || (ret = (simulation_init(*ptr_to_p, args)
 				|| create_philosophers(*ptr_to_p))));
 	clean_up(*ptr_to_p);
