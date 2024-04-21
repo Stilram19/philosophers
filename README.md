@@ -7,9 +7,6 @@
 In this project, you will solve the dining philosophers problem, you will delve into the fundamentals of concurrent programming, exploring threading and multiprocessing techniques. Through the simulation of the dining philosophers problem, you'll gain insights into creating threads and employing synchronization primitives such as mutexes and semaphores. By implementing a solution that ensures no philosopher starves, you'll tackle challenges in both multithreading and multiprocessing environments, honing your skills in concurrent programming and synchronization mechanisms.
 Here is the link to the [subject](https://cdn.intra.42.fr/pdf/pdf/73397/en.subject.pdf)
 
-## Dining philosophers simulation:
-
-https://github.com/Stilram19/philosophers/assets/115463108/24b40738-4e8e-4e77-ad43-4c2cd3474738
 
 ## What I learned from this project:
 
@@ -20,6 +17,10 @@ During the development of this project, I've learned several important concepts 
 - **Data Race**: Recognizing the occurrence of conflicts between concurrent threads or processes accessing shared data without proper synchronization, leading to unpredictable behavior and potential program crashes.
 - **Starvation**: Understanding the phenomenon where a thread or process is unable to proceed with its execution due to being perpetually denied access to a critical resource, often caused by unfair scheduling or resource allocation.
 - **Race Condition**: Identifying the scenario where the outcome of a program depends on the relative timing or interleaving of operations from concurrent threads or processes, resulting in unpredictable behavior and incorrect program execution.
+
+## Dining philosophers simulation:
+
+https://github.com/Stilram19/philosophers/assets/115463108/24b40738-4e8e-4e77-ad43-4c2cd3474738
 
 # my_42_project
 
