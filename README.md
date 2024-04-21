@@ -19,20 +19,20 @@ During the development of this project, I've learned several important concepts 
 
 # my_42_project
 
-![](resources/my_project.png)
+![](images/my_project.png)
 
 ## Usage
 
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone git@github.com:Stilram19/fractal.git
+   git clone git@github.com:Stilram19/philosophers.git
    ```
 
 2. Navigate to the repository's directory:
 
     ```bash
-    cd fractal
+    cd philosophers
     ```
 
 3. Compile and Run the program:
@@ -48,13 +48,7 @@ During the development of this project, I've learned several important concepts 
     ``` bash
    cd philo_bonus && make && ./philo_bonus 5 500 100 100
    ```
-## Concepts you cannot do without (for students):
+## Resources (for students):
 
-- [image memory representation](https://youtu.be/8CuYq3RU7BY?si=4uNmKBcBs7NfgL5R)
-- [RGB coloring model](https://en.wikipedia.org/wiki/RGB_color_model)
-- [fractal](https://en.wikipedia.org/wiki/Fractal)
-- [Basics of Complex Numbers](https://en.wikipedia.org/wiki/Complex_number)
-- [Mandelbrot Set](https://en.wikipedia.org/wiki/Mandelbrot_set)
-- [Julia Set](https://en.wikipedia.org/wiki/Julia_set)
-- [Julia Set](https://en.wikipedia.org/wiki/Julia_set)
-- [Computer Graphics](https://en.wikipedia.org/wiki/Computer_graphics_(computer_science))
+- [Unix threads in c playlist](https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2)
+- [Multithreading tutorial](https://randu.org/tutorials/threads/)
