@@ -77,9 +77,6 @@ void	wait_for_philosophers(t_args *args)
 
 void	simulation_init(t_args *args)
 {
-	t_sophia	i;
-
-	i = -1;
 	args->eaten_meals = 0;
 	args->forks.name = "/forks";
 	args->print.name = "/print";

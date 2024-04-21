@@ -76,7 +76,9 @@ t_sophia	supervising(t_philos *p)
 			return (SUCCESS);
 		pthread_mutex_unlock(&(p->args->meals_mtx));
 		_usleep(50);
-		((i == p->args->philo_num - 1) && (i = -1));
+		if (i == p->args->philo_num - 1) {
+			i = -1;
+		}
 	}
 	return (SUCCESS);
 }

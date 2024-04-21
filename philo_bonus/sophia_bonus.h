@@ -23,6 +23,7 @@
 # include <sys/time.h>
 # include <signal.h>
 # include "my_reference_bonus.h"
+#include <sys/stat.h>
 
 t_time		_time(void);
 t_sophia	_usleep(t_time t);

@@ -17,7 +17,9 @@ t_sophia	safe_atoi(char *arg)
 	t_sophia	ret;
 
 	ret = NIHIL;
-	((*arg == '+' && (arg++)));
+	if (*arg == '+') {
+		arg++;
+	}
 	while (*arg >= 48 && *arg <= 57)
 	{
 		ret *= 10;
@@ -29,7 +31,9 @@ t_sophia	safe_atoi(char *arg)
 
 t_sophia	extrem_test(char *arg)
 {
-	((*arg == '+') && (arg++));
+	if (*arg == '+') {
+		arg++;
+	}
 	if (ft_strlen(arg) > 10 || (ft_strlen(arg) == 10
 			&& ft_strncmp(EXTREM, arg, 10) < 0))
 		return (INVALID);
@@ -41,7 +45,9 @@ t_sophia	digits_test(char *arg)
 	t_sophia	digit_existence;
 
 	digit_existence = NIHIL;
-	((*arg == '+') && (arg++));
+	if (*arg == '+') {
+		arg++;
+	}
 	while (*arg)
 	{
 		if (*arg < 48 || *arg > 57)
@@ -66,10 +72,14 @@ t_sophia	detecting_fallacies(int argc, char **argv, t_args *args)
 	while (boolean && ++i < argc)
 	{
 		boolean = digits_test(*(argv + i));
-		(boolean && (boolean = extrem_test(*(argv + i))));
-		(boolean && (*ptr_to_field = safe_atoi(*(argv + i))));
+		if (boolean) {
+			boolean = extrem_test(*(argv + i));
+			*ptr_to_field = safe_atoi(*(argv + i));
+		}
 		ptr_to_field++;
 	}
-	((argc == 6) || (args->number_of_meals = -1));
+	if (argc != 6) {
+		args->number_of_meals = -1;
+	}
 	return (!boolean);
 }

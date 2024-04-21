@@ -43,7 +43,8 @@ t_sophia	_usleep(t_time t)
 	t_time		time_up;
 
 	_sleep = 150;
-	((t < 150) && (_sleep = t));
+	if (t < 150)
+		_sleep = t;
 	time_up = _time() + t;
 	while (_time() < time_up)
 		usleep(_sleep);
