@@ -7,6 +7,10 @@
 In this project, you will solve the dining philosophers problem, you will delve into the fundamentals of concurrent programming, exploring threading and multiprocessing techniques. Through the simulation of the dining philosophers problem, you'll gain insights into creating threads and employing synchronization primitives such as mutexes and semaphores. By implementing a solution that ensures no philosopher starves, you'll tackle challenges in both multithreading and multiprocessing environments, honing your skills in concurrent programming and synchronization mechanisms.
 Here is the link to the [subject](https://cdn.intra.42.fr/pdf/pdf/73397/en.subject.pdf)
 
+## Dining philosophers simulation:
+
+https://github.com/Stilram19/philosophers/assets/115463108/24b40738-4e8e-4e77-ad43-4c2cd3474738
+
 ## What I learned from this project:
 
 During the development of this project, I've learned several important concepts including:
